@@ -1,0 +1,149 @@
+﻿<!doctype html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Shop Image CMS</title>
+</head>
+<script src="../js/data-grid/dhtmlxcommon.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxgrid.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxgridcell.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxdataprocessor.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxcombo.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<link rel="stylesheet" href="../styles/dhtmlxgrid.css" type="text/css" media="screen" title="no title" charset="utf-8">
+<link rel="stylesheet" href="../styles/data-grid-skins/dhtmlxgrid_dhx_skyblue.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+<script type="text/javascript" charset="utf-8">
+    function init() {
+        my_grid = new dhtmlXGridObject("grid_shop-images");
+        my_grid.setImagePath("../images/data-grid-images/");
+        my_grid.setHeader("Shop Name,Image Type,Public ID,Image");
+        my_grid.setColumnIds("shop_id,image_type_id,public_id,url");
+        my_grid.setInitWidths("256,256,256,*");
+        my_grid.setColTypes("co,co,ed,ro");
+        my_grid.setColSorting("str,str,str,str");
+        my_grid.setSkin("dhx_skyblue");
+
+
+
+        var shop_combo = my_grid.getCombo(my_grid.getColIndexById("shop_id"));
+        $.ajax({
+            type: "GET",
+            url: "/cms/shop-combo/getdata/",
+            success: function (result) {
+                result.forEach(function (item) {
+                    shop_combo.put(item.id, item.description);
+                });
+            },
+            async: false
+        });
+
+
+
+        var image_type_combo = my_grid.getCombo(my_grid.getColIndexById("image_type_id"));
+        $.ajax({
+            type: "GET",
+            url: "/cms/image-type-combo/getdata/",
+            success: function (result) {
+                result.forEach(function (item) {
+                    image_type_combo.put(item.id, item.description);
+                });
+            },
+            async: false
+        });
+
+
+
+        my_grid.init();
+        my_grid.load("/cms/shop-images/getdata", "js")
+        dp = new dataProcessor("/cms/shop-images/getdata");
+        dp.init(my_grid);
+        dp.enableDataNames(true);
+        dp.setTransactionMode("POST", false);
+    }
+
+
+
+
+    function addrow() {
+        var id = my_grid.uid();
+        my_grid.setActive(true);
+        my_grid.addRow(id, "1,1,null");
+    }
+    function deleterow() {
+        var r = confirm("Do you really want to delete the record.");
+        if (r == true) {
+            my_grid.deleteSelectedRows();
+        }
+    }
+
+    function updaterow() {
+    }
+
+    $( document ).ready(function() {
+        $.ajax({
+            type: "GET",
+            url: "/cms/shop-combo/getdata",
+            success: function (result) {
+                    console.log(result.length);
+                result.forEach(function (name) {
+                      $('#shopId').append($("<option />").val(name.id).text(name.description));
+                      //console.log("name : " + name.id +" desc " +name.description);
+                });
+            },
+            async : false
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "/cms/image-type-combo/getdata",
+            success: function (result) {
+                    console.log(result.length);
+                result.forEach(function (name) {
+                      $('#imageType').append($("<option />").val(name.id).text(name.description));
+                      //console.log("name : " + name.id +" desc " +name.description);
+                });
+            },
+            async : false
+        });
+    });
+
+    function filldescription() {
+
+        var imageType = document.getElementById("imageType"); 
+        var imageTypeDescription = imageType.options[imageType.selectedIndex].text;
+        var shopDesc = document.getElementById("shopId");
+        var shopDescription = shopDesc.options[shopDesc.selectedIndex].text;
+        document.getElementById("image-type-desc").value = imageTypeDescription;
+        document.getElementById("shop_desc").value = shopDescription;
+        document.getElementById('upload-form').submit();  
+    }
+</script>
+<body onload="init();">
+    <br>
+    <input style="padding:6px;" type="button" value="Home" onclick="location.href = '/cms/homepage-images';">
+    <br />
+
+    <br>
+    <h3>CMS -Shop Image Table</h3>
+    <div id="grid_shop-images" style="width:1250px; height:500px;"></div>
+    <br>
+    <input style="padding:6px;" type="button" value="Add a new record" onclick="addrow()">
+    <input style="padding:6px;" type="button" value="Update the selected record" onclick="updaterow()">
+    <input style="padding:6px;" type="button" value="Delete the selected record" onclick="deleterow()">
+    <h3>Shop Image ADD </h3>
+    <form method="post" id= "upload-form" enctype="multipart/form-data" action="/cms/shop-images">
+        <select id="shopId" name="shop_id"></select>
+        <input id="shop_desc" type="hidden" name="shop_desc">
+        <br />
+        <br>
+        <select id="imageType" name="image_type_id"></select>
+        <input id="image-type-desc" type="hidden" name="image_type_desc">
+        <br />
+        <br>
+        <input type="file" name="shopimage" class="uploadimage">
+        <br />
+        <br>
+        <input type="submit" class="submit" value="Submit" onclick="filldescription()">
+    </form>
+</body>
+

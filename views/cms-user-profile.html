@@ -1,0 +1,103 @@
+﻿<!doctype html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>User Profile CMS</title>
+</head>
+<script src="../js/data-grid/dhtmlxcommon.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxgrid.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxgridcell.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxdataprocessor.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxcombo.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<link rel="stylesheet" href="../styles/dhtmlxgrid.css" type="text/css" media="screen" title="no title" charset="utf-8">
+<link rel="stylesheet" href="../styles/data-grid-skins/dhtmlxgrid_dhx_skyblue.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+<script type="text/javascript" charset="utf-8">
+    function init() {
+        my_grid = new dhtmlXGridObject("grid_user-profile");
+        my_grid.setImagePath("../images/data-grid-images/");
+        my_grid.setHeader("User ID, QB User ID,First Name,Last Name,Gender,DOB,Location,Phone,URL,App Signup");
+        my_grid.setColumnIds("user_id,qb_user_id,first_name,last_name,gender,dob,location,phone,profile_image_url,is_app_signup");
+        my_grid.setInitWidths("128,128,128,128,128,256,128,128,256,128");
+        my_grid.setColTypes("co,ed,ed,ed,co,ed,co,ed,ed,ch");
+        my_grid.setColSorting("str,str,str,str,str,str,str,str,str,int");
+        my_grid.setSkin("dhx_skyblue");
+
+        var user_combo = my_grid.getCombo(my_grid.getColIndexById("user_id"));
+        $.ajax({
+            type: "GET",
+            url: "/cms/user-combo/getdata/",
+            success: function (result) {
+                result.forEach(function (item) {
+                    user_combo.put(item.id, item.description);
+                });
+            },
+            async: false
+        });
+
+        var gender_combo = my_grid.getCombo(my_grid.getColIndexById("gender"));
+        $.ajax({
+            type: "GET",
+            url: "/cms/gender-combo/getdata/",
+            success: function (result) {
+                result.forEach(function (item) {
+                    gender_combo.put(item.id, item.description);
+                });
+            },
+            async: false
+        });
+
+
+
+        var location_combo = my_grid.getCombo(my_grid.getColIndexById("location"));
+        $.ajax({
+            type: "GET",
+            url: "/cms/location-combo/getdata/",
+            success: function (result) {
+                result.forEach(function (item) {
+                    location_combo.put(item.id, item.description);
+                });
+            },
+            async: false
+        });
+
+
+
+        my_grid.init();
+        my_grid.load("/cms/user-profile/getdata", "js")
+        dp = new dataProcessor("/cms/user-profile/getdata");
+        dp.init(my_grid);
+        dp.enableDataNames(true);
+        dp.setTransactionMode("POST", false);
+    }
+
+    function addrow() {
+        var id = my_grid.uid();
+        my_grid.setActive(true);
+        my_grid.addRow(id, "reload-page-to-refresh,0,Enther first name,Enter last name,1,0000-00-00 00:00:00,1,Enter phone number,Enter photo url,1");
+    }
+    function deleterow() {
+        var r = confirm("Do you really want to delete the record.");
+        if (r == true) {
+            my_grid.deleteSelectedRows();
+        }
+    }
+
+    function updaterow() {
+    }
+</script>
+<body onload="init();">
+    <br>
+    <br>
+    <input style="padding:6px;" type="button" value="Home" onclick="location.href = '/cms/homepage';">
+    <br />
+
+    <br />
+    <h3>CMS -User Profile Table</h3>
+    <div id="grid_user-profile" style="width:1250px; height:500px;"></div>
+    <br>
+    <input style="padding:6px;" type="button" value="Add a new record" onclick="addrow()">
+    <input style="padding:6px;" type="button" value="Update the selected record" onclick="updaterow()">
+    <input style="padding:6px;" type="button" value="Delete the selected record" onclick="deleterow()">
+</body>
+

@@ -1,0 +1,112 @@
+<!doctype html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Scube Deals CMS</title>
+</head>
+<script src="../js/data-grid/dhtmlxcommon.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxgrid.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxgridcell.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxdataprocessor.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxcombo.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<link rel="stylesheet" href="../styles/dhtmlxgrid.css" type="text/css" media="screen" title="no title" charset="utf-8">
+<link rel="stylesheet" href="../styles/data-grid-skins/dhtmlxgrid_dhx_skyblue.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+<script type="text/javascript" charset="utf-8">
+    function init() {
+        my_grid = new dhtmlXGridObject("grid_scube_deals");
+        my_grid.setImagePath("../images/data-grid-images/");
+        my_grid.setHeader("Shop Name,Brand Name,Offer,Start Date,End Date,Notes,URL,Valid");
+        my_grid.setColumnIds("shop_profile_id,brand_id,offer_id,start_date,end_date,notes,photo_url,valid");
+        my_grid.setInitWidths("256,256,256,256,256,256,256,64");
+        my_grid.setColTypes("co,co,co,ed,ed,ed,ed,ch");
+        my_grid.setColSorting("str,str,str,str,str,str,str,int");
+        my_grid.setSkin("dhx_skyblue");
+
+
+
+        var shop_profile_combo = my_grid.getCombo(my_grid.getColIndexById("shop_profile_id"));
+        $.ajax({
+            type: "GET",
+            url: "/cms/shop-profile-loc-combo/getdata/",
+            success: function (result) {
+                result.forEach(function (item) {
+                    shop_profile_combo.put(item.id, item.description);
+                });
+            },
+            async: false
+        });
+
+
+
+        var brands_combo = my_grid.getCombo(my_grid.getColIndexById("brand_id"));
+        $.ajax({
+            type: "GET",
+            url: "/cms/brand-combo/getdata/",
+            success: function (result) {
+                result.forEach(function (item) {
+                    brands_combo.put(item.id, item.description);
+                });
+            },
+            async: false
+        });
+
+
+
+
+        var offer_combo = my_grid.getCombo(my_grid.getColIndexById("offer_id"));
+        $.ajax({
+            type: "GET",
+            url: "/cms/offer-combo/getdata/",
+            success: function (result) {
+                result.forEach(function (item) {
+                    offer_combo.put(item.id, item.description);
+                });
+            },
+            async: false
+        });
+
+
+        my_grid.init();
+        my_grid.load("/cms/scube-deals/getdata", "js")
+        dp = new dataProcessor("/cms/scube-deals/getdata");
+        dp.init(my_grid);
+        dp.enableDataNames(true);
+        dp.setTransactionMode("POST", false);
+    }
+
+
+
+
+    function addrow() {
+        var id = my_grid.uid();
+        my_grid.setActive(true);
+        my_grid.addRow(id, "4,1,1,0000-00-00 00:00:00,0000-00-00 00:00:00,Enter Notes,Enter URL,1");
+    }
+    function deleterow() {
+        var r = confirm("Do you really want to delete the record.");
+        if (r == true) {
+            my_grid.deleteSelectedRows();
+        }
+    }
+
+    function updaterow() {
+    }
+</script>
+<body onload="init();">
+    <br>
+    <br>
+    <input style="padding:6px;" type="button" value="Home" onclick="location.href = '/cms/homepage';">
+    <br />
+
+    <br />
+    <h3>CMS -Scube Deals Table</h3>
+    <div id="grid_scube_deals" style="width:1500px; height:500px;"></div>
+    <br>
+    <input style="padding:6px;" type="button" value="Add a new record" onclick="addrow()">
+    <input style="padding:6px;" type="button" value="Update the selected record" onclick="updaterow()">
+    <input style="padding:6px;" type="button" value="Delete the selected record" onclick="deleterow()">
+    <h3>NOTE : Please make sure the brand profile is present for the new brand added for a shop. Click here : <input style="padding:6px;" type="button" value="Add a new brand profile" onclick="location.href = '/cms/brand-profile';">
+    </h3>
+</body>
+

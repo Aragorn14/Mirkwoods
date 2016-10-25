@@ -1,0 +1,356 @@
+/* General Styles */
+body {
+    background: none repeat scroll 0 0 #EDEDED;
+    color: #333;
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 12px;
+}
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+}
+ol, ul {
+    list-style: none outside none;
+}
+a {
+    text-decoration: none;
+    color: #003399;
+}
+p {
+    line-height:1.4em;
+}
+button, #submit {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background: -moz-linear-gradient(center bottom , #DDDCDC 0pt, #FFFFFF 100%) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear,left bottom,left top,color-stop(0, rgb(221,220,220)),color-stop(1, rgb(255,255,255)));
+    border: 1px solid #BFBFBF;
+    color: #990600;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 3px;
+    text-align: center;
+    text-shadow: 0 0 0 transparent, 0 1px 1px #FFFFFF;
+}
+button:hover, #submit:hover {
+    background: -webkit-gradient(linear,left bottom,left top,color-stop(0, rgb(255,255,255)),color-stop(1, rgb(221,220,220)));
+    background: -moz-linear-gradient(center bottom,#FFFFFF 0%,#DDDCDC 100%);
+}
+button.small, #submit.small {
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
+    border-radius: 1px;
+    padding: 2px;
+    font-size: 12px;
+}
+button.large, #submit.large {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 16px;
+    font-weight: bold;
+}
+.error, .errorMsg {
+    display: block;
+}
+
+/* Header */
+#header {
+    background: none repeat scroll 0 0 #B31B00;
+    height: 46px;
+    margin-bottom: 20px;
+}
+#header .container {
+    height: 46px;
+    margin: auto;
+    overflow: hidden;
+    width: 760px;
+}
+#header .container .logo img {
+    float: left;
+    margin: 3px 0 0;
+}
+#header .container .link {
+    display: block;
+    float: right;
+    margin: 9px;
+    text-decoration: none;
+}
+#header .container .link span {
+    color: #FFFFFF;
+    float: left;
+    font-weight: bold;
+    margin: 5px 10px;
+    text-decoration: none;
+}
+
+/* Generic Module */
+.module {
+    background: url("https://a248.e.akamai.net/oystatic.ignimgs.com/src/ignmedia/sites/s.ign.com/img/red_square.jpg") no-repeat scroll 0 0 #fff;
+    border: 1px solid #ccc;
+    margin: 24px auto 0;
+    overflow: hidden;
+}
+.module h1, .module h3 {
+    border-bottom: 0 none;
+    display: block;
+    color: #333;
+    font-family: Helvetica,Arial,Sans-serif;
+    font-size: 30px;
+    font-weight: lighter;
+    margin: 12px 0 0 24px;
+}
+.module h3 {
+    font-size: 24px;
+    font-weight: normal;
+}
+.module label {
+    display: block;
+    font-size: 14px;
+    margin: 18px 24px 6px;
+    clear: both;
+}
+.module div.errorMsg, .module div.error, .module span.errorMsg, .module ul.errors {
+    clear: both;
+    margin: 5px 24px;
+    font-size: 11px;
+    color: #b31b00;
+    text-align: right;
+}
+.module input.error {
+    background: #ffe0e0;
+}
+.module .message {
+    clear: both;
+    display: block;
+    font-size: 12px;
+    margin: 24px;
+}
+.module #submit {
+    margin-left: 24px;
+}
+img.bottomModule {
+    clear: both;
+    display: block;
+    float: none;
+    margin: 0 auto 24px;
+    border: 0 none;
+}
+.footerhrule {
+    border-color: #CECECE #F9F9F9 #F9F9F9;
+    border-style: solid;
+    border-width: 1px;
+    height: 0;
+    margin: auto;
+    width: 720px;
+}
+.footer {
+    margin: auto;
+    width: 720px;
+}
+.footer a {
+    float: left;
+    font-size: 14px;
+    line-height: 26px;
+    margin-bottom: 12px;
+    margin-top: 10px;
+    text-decoration: none;
+}
+.footer img {
+    padding-top: 8px;
+}
+
+
+/* Login module */
+#loginModule {
+    width: 360px;
+}
+#loginModule #email, #loginModule #password {
+    clear: both;
+    border: 1px solid #999999;
+    color: #000000;
+    display: block;
+    font-size: 14px;
+    height: 24px;
+    line-height: 24px;
+    margin: 6px 0 6px 24px;
+    padding-left: 6px;
+    width: 308px;
+}
+#loginModule .forgot {
+    position: relative;
+    top: -20px;
+    left: 120px;
+}
+#loginModule .message {
+    clear: both;
+    display: block;
+    font-size: 12px;
+    border-top: 2px solid #B31B00;
+    margin: 15px 0px;
+    padding: 9px 24px;
+}
+#loginModule .controls, #registrationModule .controls {
+    margin: 15px 0 15px 24px;
+}
+#loginModule .facebook div, #registrationModule .facebook div {
+    background: url('https://a248.e.akamai.net/oystatic.ignimgs.com/src/ignmedia/sites/s.ign.com/img/openid-logos.png') no-repeat scroll 0px -260px transparent;
+    width: 89px;
+    height: 30px;
+}
+#loginModule .google div, #registrationModule .google div {
+    background: url('https://a248.e.akamai.net/oystatic.ignimgs.com/src/ignmedia/sites/s.ign.com/img/openid-logos.png') no-repeat scroll 0px -22px transparent;
+    width: 89px;
+    height: 30px;
+}
+#loginModule .yahoo div, #registrationModule .yahoo div {
+    background: url('https://a248.e.akamai.net/oystatic.ignimgs.com/src/ignmedia/sites/s.ign.com/img/openid-logos.png') no-repeat scroll 0px -84px transparent;
+    width: 89px;
+    height: 30px;
+}
+
+/* Nickname select module */
+#nickSelectModule {
+	width: 360px;
+	padding-bottom: 15px;
+}
+#nickSelectModule #nickname {
+	clear: both;
+	border: 1px solid #999999;
+	color: #000000;
+	display: block;
+	font-size: 14px;
+	height: 24px;
+	line-height: 24px;
+	margin: 6px 0 6px 24px;
+	padding-left: 6px;
+	width: 308px;
+}
+
+/* Forgot Password module */
+#recoveryModule {
+	width: 360px;
+	padding-bottom: 15px;
+}
+#recoveryModule #email, #recoveryModule #password, #recoveryModule #passwordr {
+    clear: both;
+    border: 1px solid #999999;
+    color: #000000;
+    display: block;
+    font-size: 14px;
+    height: 24px;
+    line-height: 24px;
+    margin: 6px 0 6px 24px;
+    padding-left: 6px;
+    width: 308px;
+}
+
+/* Registration module */
+#registrationModule {
+    width: 720px;
+}
+#registrationModule .leftPane {
+    float: left;
+    width: 359px;
+}
+#registrationModule .leftPage h3 {
+    margin: 22px 21px;
+}
+#registrationModule .rightPane {
+    border-left: 1px solid #CCCCCC;
+    float: right;
+    width: 360px;
+}
+#registrationModule .leftPane .benefits .benefit {
+    margin: 12px 12px 12px 24px;
+}
+#registrationModule .leftPane .benefit .media {
+    clear: both;
+    display: block;
+    overflow: hidden;
+}
+#registrationModule .leftPane .benefit .media .icon {
+    display: block;
+    float: left;
+    height: 40px;
+    width: 50px;
+}
+.icon.voice {
+    background: url("https://a248.e.akamai.net/oystatic.ignimgs.com/src/ignmedia/sites/s.ign.com/img/reg-sprite.png") no-repeat scroll 0 -40px transparent;
+}
+.icon.favgames {
+    background: url("https://a248.e.akamai.net/oystatic.ignimgs.com/src/ignmedia/sites/s.ign.com/img/reg-sprite.png") no-repeat scroll 0 0 transparent;
+}
+.icon.points {
+    background: url("https://a248.e.akamai.net/oystatic.ignimgs.com/src/ignmedia/sites/s.ign.com/img/reg-sprite.png") no-repeat scroll 0 -116px transparent;
+}
+.icon.tracking {
+    background: url("https://a248.e.akamai.net/oystatic.ignimgs.com/src/ignmedia/sites/s.ign.com/img/reg-sprite.png") no-repeat scroll 0 -77px transparent;
+}
+#registrationModule .leftPane .benefit .media .text {
+    margin: 0px 0px 0px 65px;
+}
+#registrationModule .leftPane .benefit .media .title {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0;
+}
+#registrationModule .leftPane .benefit .media .description {
+    font-size: 14px;
+    color: #666666;
+}
+#registrationModule .rightPane h3 {
+    margin: 15px 0 0 22px;
+}
+#registrationModule #nickname, #registrationModule #email, #registrationModule #password {
+    clear: both;
+    border: 1px solid #999999;
+    color: #000000;
+    display: block;
+    font-size: 14px;
+    height: 24px;
+    line-height: 24px;
+    margin: 6px 0 6px 24px;
+    padding-left: 6px;
+    width: 308px;
+}
+#registrationModule .rightPane .message {
+    clear: both;
+    display: block;
+    font-size: 12px;
+    border-top: 2px solid #B31B00;
+    margin: 15px 0px;
+    padding: 9px 24px;
+}
+#registrationModule #newsletter, #nickSelectModule #newsletter {
+    clear: both;
+    display: block;
+    font-size: 14px;
+    height: 24px;
+    line-height: 24px;
+    margin: 6px 0 6px 24px;
+    float: left;
+}
+#registrationModule #newsletter-element .description,
+#nickSelectModule #newsletter-element .description {
+    display: inline;
+    clear: none;
+    float: left;
+    margin: 10px 10px;
+    font-size: 14px;
+}
+#registrationModule div.errorMsg, #registrationModule div.error, #registrationModule span.errorMsg, #registrationModule ul.errors {
+    clear: both;
+    margin: 5px 24px;
+    font-size: 11px;
+    color: #b31b00;
+    text-align: right;
+}
+#recaptcha_widget_div {
+    clear: both;
+    display: block;
+    float: none;
+    margin: 6px 21px 10px;
+}

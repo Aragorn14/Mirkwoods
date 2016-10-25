@@ -1,0 +1,109 @@
+﻿<!doctype html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Shop Profile CMS</title>
+</head>
+<script src="../js/data-grid/dhtmlxcommon.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxgrid.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxgridcell.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxdataprocessor.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxcombo.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<link rel="stylesheet" href="../styles/dhtmlxgrid.css" type="text/css" media="screen" title="no title" charset="utf-8">
+<link rel="stylesheet" href="../styles/data-grid-skins/dhtmlxgrid_dhx_skyblue.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+<script type="text/javascript" charset="utf-8">
+    function init() {
+        my_grid = new dhtmlXGridObject("grid_shop-profile");
+        my_grid.setImagePath("../images/data-grid-images/");
+        my_grid.setHeader("Shop,Mall,Address,Phone,Floor,Category,Scubits,Outlet");
+        my_grid.setColumnIds("shop_id,mall_id,address,phone,floor,category_id,scubit_cnt,outlet");
+        my_grid.setInitWidths("256,175,350,100,45,175,128,64");
+        my_grid.setColTypes("co,co,ed,ed,ed,co,ro,ch");
+        my_grid.setColSorting("str,str,str,str,int,str,int,int");
+        my_grid.setSkin("dhx_skyblue");
+
+
+
+        var shops_combo = my_grid.getCombo(my_grid.getColIndexById("shop_id"));
+        $.ajax({
+            type: "GET",
+            url: "/cms/shop-combo/getdata/",
+            success: function (result) {
+                result.forEach(function (item) {
+                    shops_combo.put(item.id, item.description);
+                });
+            },
+            async: false
+        });
+
+
+
+        var mall_loc_combo = my_grid.getCombo(my_grid.getColIndexById("mall_id"));
+        $.ajax({
+            type: "GET",
+            url: "/cms/mall-loc-combo/getdata/",
+            success: function (result) {
+                result.forEach(function (item) {
+                    mall_loc_combo.put(item.id, item.description);
+                });
+            },
+            async: false
+        });
+
+
+
+        var category_combo = my_grid.getCombo(my_grid.getColIndexById("category_id"));
+        $.ajax({
+            type: "GET",
+            url: "/cms/category-combo/getdata/",
+            success: function (result) {
+                result.forEach(function (item) {
+                    category_combo.put(item.id, item.description);
+                });
+            },
+            async: false
+        });
+
+
+
+        my_grid.init();
+        my_grid.load("/cms/shop-profile/getdata", "js")
+        dp = new dataProcessor("/cms/shop-profile/getdata");
+        dp.init(my_grid);
+        dp.enableDataNames(true);
+        dp.setTransactionMode("POST", false);
+    }
+
+
+
+
+    function addrow() {
+        var id = my_grid.uid();
+        my_grid.setActive(true);
+        my_grid.addRow(id, "4,2,NULL,NULL,1,1,0,0");
+    }
+    function deleterow() {
+        var r = confirm("Do you really want to delete the record.");
+        if (r == true) {
+            my_grid.deleteSelectedRows();
+        }
+    }
+
+    function updaterow() {
+    }
+</script>
+<body onload="init();">
+    <br>
+    <input style="padding:6px;" type="button" value="Home" onclick="location.href = '/cms/homepage';">
+    <br />
+
+    <br />
+    <h3>CMS -Shop Profile Table</h3>
+    <div id="grid_shop-profile" style="width:1350px; height:500px;"></div>
+    <br>
+    <input style="padding:6px;" type="button" value="Add a new record" onclick="addrow()">
+    <input style="padding:6px;" type="button" value="Update the selected record" onclick="updaterow()">
+    <input style="padding:6px;" type="button" value="Delete the selected record" onclick="deleterow()">
+</body>
+

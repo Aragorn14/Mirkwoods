@@ -1,0 +1,19 @@
+TABLE_NAME      PRIMARY_KEY         API         DISPLAY
+---------------------------------------------------------------------------------
+tbl_scubit     #scubit_id         #scubit      #Scubit
+
+DISPLAY_NAME    SQL_COLUMN          WIDTH   DATA    TYPE    API             ADD_VAL
+------------------------------------------------------------------------------------
+Shop Name       #shop_profile_id    #256    #str    #co     #shop-profile   #1
+Brand Name      #brand_id           #256    #str    #co     #brands         #1
+User            #user_id            #256    #str    #co     #user-id        #1
+Gender          #gender_id          #128    #str    #co     #gender         #1
+Offer           #offer_id           #256    #str    #co     #offer          #1
+Price Range     #price_range_id     #256    #str    #co     #price-range    #1
+Payment Type    #payment_id         #256    #str    #co     #payment-type   #1
+Num Items       #num_items          #128    #int    #ed     #none           #0
+Start Date      #start_date         #256    #str    #ed     #none           #0000-00-00 00:00:00
+End Date        #end_date           #256    #str    #ed     #none           #0000-00-00 00:00:00
+Notes           #notes              #256    #str    #ed     #none           #Enter Notes
+URL             #photo_url          #256    #str    #ed     #none           #Enter URL
+Valid           #valid              #64     #int    #ch     #none           #0

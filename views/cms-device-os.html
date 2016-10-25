@@ -1,0 +1,75 @@
+﻿<!doctype html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Device OS CMS</title>
+</head>
+	<script src="../js/data-grid/dhtmlxcommon.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/data-grid/dhtmlxgrid.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/data-grid/dhtmlxgridcell.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/data-grid/dhtmlxdataprocessor.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/data-grid/dhtmlxcombo.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+	<link rel="stylesheet" href="../styles/dhtmlxgrid.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<link rel="stylesheet" href="../styles/data-grid-skins/dhtmlxgrid_dhx_skyblue.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+<script type="text/javascript" charset="utf-8">
+	function init() {
+	    my_grid = new dhtmlXGridObject("grid_device_os");
+	    my_grid.setImagePath("../images/data-grid-images/");
+	    my_grid.setHeader("Device OS, Validated");
+	    my_grid.setColumnIds("description,valid");
+	    my_grid.setInitWidths("256,*");
+	    my_grid.setColTypes("ed,ch");
+	    my_grid.setColSorting("str,int");
+	    my_grid.setSkin("dhx_skyblue");
+		
+	
+
+		my_grid.init();
+		my_grid.load("/cms/device-os/getalldata", "js")
+
+		dp = new dataProcessor("/cms/device-os/getalldata");
+		dp.init(my_grid);
+		dp.enableDataNames(true);
+	    //dp.setUpdateMode("off");
+        /*This sends request to database for every field, need to find better approach*/
+		dp.setTransactionMode("POST", false);
+	}
+
+	 function addrow(){
+	     var id = my_grid.uid();
+	     my_grid.setActive(true);
+	     my_grid.addRow(id, "Enter the new OS name, 1");
+    }
+
+	 function deleterow() {
+	     var r = confirm("Do you really want to delete the record.");
+	     if (r == true) {
+	         my_grid.deleteSelectedRows();
+	     } 
+	 }
+
+	 function updaterow() {
+	     //dp.sendData();
+	 }
+</script>	
+
+
+
+<body onload="init();">
+    
+    <br>
+    <br>
+    <input style="padding:6px;" type="button" value="Home" onclick="location.href = '/cms/homepage';">
+    <br />
+
+    <br />
+
+    <h3>CMS - Device Operating Systems Table</h3>
+    <div id="grid_device_os" style="width:1000px; height:500px;"></div>
+    <br>
+        <input style="padding:6px;" type="button" value="Add a new record" onclick="addrow()">
+        <input style="padding:6px;" type="button" value="Update the selected record" onclick="updaterow()">
+        <input style="padding:6px;" type="button" value="Delete the selected record" onclick="deleterow()">
+</body>

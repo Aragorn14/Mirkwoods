@@ -1,0 +1,96 @@
+﻿<!doctype html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>User Category Preference CMS</title>
+</head>
+<script src="../js/data-grid/dhtmlxcommon.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxgrid.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxgridcell.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxdataprocessor.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/data-grid/dhtmlxcombo.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<link rel="stylesheet" href="../styles/dhtmlxgrid.css" type="text/css" media="screen" title="no title" charset="utf-8">
+<link rel="stylesheet" href="../styles/data-grid-skins/dhtmlxgrid_dhx_skyblue.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+<script type="text/javascript" charset="utf-8">
+    function init() {
+        my_grid = new dhtmlXGridObject("grid_user-category-pref");
+        my_grid.setImagePath("../images/data-grid-images/");
+        my_grid.setHeader("User,Category,Valid");
+        my_grid.setColumnIds("user_id,category_id,valid");
+        my_grid.setInitWidths("256,256,64");
+        my_grid.setColTypes("co,co,ch");
+        my_grid.setColSorting("str,str,int");
+        my_grid.setSkin("dhx_skyblue");
+
+
+
+        var user_combo = my_grid.getCombo(my_grid.getColIndexById("user_id"));
+        $.ajax({
+            type: "GET",
+            url: "/cms/user-combo/getdata/",
+            success: function (result) {
+                result.forEach(function (item) {
+                    user_combo.put(item.id, item.description);
+                });
+            },
+            async: false
+        });
+
+
+
+        var category_combo = my_grid.getCombo(my_grid.getColIndexById("category_id"));
+        $.ajax({
+            type: "GET",
+            url: "/cms/category-combo/getdata/",
+            success: function (result) {
+                result.forEach(function (item) {
+                    category_combo.put(item.id, item.description);
+                });
+            },
+            async: false
+        });
+
+
+
+        my_grid.init();
+        my_grid.load("/cms/user-category-pref/getdata", "js")
+        dp = new dataProcessor("/cms/user-category-pref/getdata");
+        dp.init(my_grid);
+        dp.enableDataNames(true);
+        dp.setTransactionMode("POST", false);
+    }
+
+
+
+
+    function addrow() {
+        var id = my_grid.uid();
+        my_grid.setActive(true);
+        my_grid.addRow(id, "1,1,0");
+    }
+    function deleterow() {
+        var r = confirm("Do you really want to delete the record.");
+        if (r == true) {
+            my_grid.deleteSelectedRows();
+        }
+    }
+
+    function updaterow() {
+    }
+</script>
+<body onload="init();">
+    <br>
+    <br>
+    <input style="padding:6px;" type="button" value="Home" onclick="location.href = '/cms/homepage';">
+    <br />
+
+    <br />
+    <h3>CMS -User Category Preference Table</h3>
+    <div id="grid_user-category-pref" style="width:1250px; height:500px;"></div>
+    <br>
+    <input style="padding:6px;" type="button" value="Add a new record" onclick="addrow()">
+    <input style="padding:6px;" type="button" value="Update the selected record" onclick="updaterow()">
+    <input style="padding:6px;" type="button" value="Delete the selected record" onclick="deleterow()">
+</body>
+

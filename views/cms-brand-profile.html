@@ -1,0 +1,110 @@
+﻿<!doctype html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Brand Profile CMS</title>
+</head>
+	<script src="../js/data-grid/dhtmlxcommon.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/data-grid/dhtmlxgrid.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/data-grid/dhtmlxgridcell.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/data-grid/dhtmlxdataprocessor.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/data-grid/dhtmlxcombo.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+	<link rel="stylesheet" href="../styles/dhtmlxgrid.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<link rel="stylesheet" href="../styles/data-grid-skins/dhtmlxgrid_dhx_skyblue.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+<script type="text/javascript" charset="utf-8">
+	function init() {
+	    my_grid = new dhtmlXGridObject("grid_brand_profile");
+	    my_grid.setImagePath("../images/data-grid-images/");
+	    my_grid.setHeader("Brand, Shop Profile, Category, Scubits, Outlet");
+	    my_grid.setColumnIds("brand_id,shop_id,category_id,scubit_cnt,outlet");
+	    my_grid.setInitWidths("256,256,256,128,*");
+	    my_grid.setColTypes("co,co,co,ro,ch");
+	    my_grid.setColSorting("str,str,str,int,int");
+	    my_grid.setSkin("dhx_skyblue");
+		
+		
+	    var shop_combo = my_grid.getCombo(my_grid.getColIndexById("shop_id"));
+		$.ajax({
+		    type: "GET",
+		    url: "/cms/shop-profile-loc-combo/getdata",
+		    success: function (result) {
+		        result.forEach(function (shops) {
+		            shop_combo.put(shops.id, shops.description);
+		        });
+		    },
+		    async : false
+		});
+        
+
+		var brand_combo = my_grid.getCombo(my_grid.getColIndexById("brand_id"));
+		$.ajax({
+		    type: "GET",
+		    url: "/cms/brand-combo/getdata/",
+		    success: function (result) {
+		        result.forEach(function (brands) {
+		            brand_combo.put(brands.id, brands.description);
+		        });
+		    },
+		    async: false
+		});
+
+		var category_combo = my_grid.getCombo(my_grid.getColIndexById("category_id"));
+		$.ajax({
+		    type: "GET",
+		    url: "/cms/category-combo/getdata/",
+		    success: function (result) {
+		        result.forEach(function (category) {
+		            category_combo.put(category.id, category.description);
+		        });
+		    },
+		    async: false
+		});
+
+		my_grid.init();
+		my_grid.load("/cms/brand-profile/getdata", "js")
+
+		dp = new dataProcessor("/cms/brand-profile/getdata");
+		dp.init(my_grid);
+		dp.enableDataNames(true);
+	    //dp.setUpdateMode("off");
+        /*This sends request to database for every field, need to find better approach*/
+		dp.setTransactionMode("POST", false);
+	}
+
+	 function addrow(){
+	     var id = my_grid.uid();
+	     my_grid.setActive(true);
+	     my_grid.addRow(id, "4,1,31,0,0");
+    }
+
+	 function deleterow() {
+	     var r = confirm("Do you really want to delete the record.");
+	     if (r == true) {
+	         my_grid.deleteSelectedRows();
+	     } 
+	 }
+
+	 function updaterow() {
+	     //dp.sendData();
+	 }
+</script>	
+
+
+
+<body onload="init();">
+    
+    <br>
+    <br>
+    <input style="padding:6px;" type="button" value="Home" onclick="location.href = '/cms/homepage';">
+    <br />
+
+    <br />
+    <h3>CMS - Brand Profile Table</h3>
+    <div id="grid_brand_profile" style="width:1000px; height:500px;"></div>
+    <br>
+        <input style="padding:6px;" type="button" value="Add a new record" onclick="addrow()">
+        <input style="padding:6px;" type="button" value="Update the selected record" onclick="updaterow()">
+        <input style="padding:6px;" type="button" value="Delete the selected record" onclick="deleterow()">
+</body>

@@ -1,0 +1,100 @@
+﻿<!doctype html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Shopping Mall CMS</title>
+</head>
+	<script src="../js/data-grid/dhtmlxcommon.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/data-grid/dhtmlxgrid.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/data-grid/dhtmlxgridcell.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/data-grid/dhtmlxdataprocessor.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/data-grid/dhtmlxcombo.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+	<link rel="stylesheet" href="../styles/dhtmlxgrid.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<link rel="stylesheet" href="../styles/data-grid-skins/dhtmlxgrid_dhx_skyblue.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+<script type="text/javascript" charset="utf-8">
+	function init() {
+	    my_shop_grid = new dhtmlXGridObject("grid_shop_mall");
+	    my_shop_grid.setImagePath("../images/data-grid-images/");
+	    my_shop_grid.setHeader("Mall Name,Location,Address,Popularity,Scubits,Latitude,Longitude");
+	    my_shop_grid.setColumnIds("mall_name,location_id,address,popularity_index,scubit_cnt,latitude,longitude");
+	    my_shop_grid.setInitWidths("128,128,256,128,128,128,*");
+	    my_shop_grid.setColTypes("ed,co,ed,co,ro,ed,ed");
+	    my_shop_grid.setColSorting("str,int,str,int,int,int,int");
+	    my_shop_grid.setSkin("dhx_skyblue");
+		
+		
+
+	    var location_combo = my_shop_grid.getCombo(my_shop_grid.getColIndexById("location_id"));
+		$.ajax({
+		    type: "GET",
+		    url: "/cms/location-combo/getdata/",
+		    success: function (result) {
+		    	console.log(result);
+		        result.forEach(function (city) {
+		            location_combo.put(city.id, city.description);
+		        });
+		    },
+		    async : false
+		});
+        
+
+		var pop_combo = my_shop_grid.getCombo(my_shop_grid.getColIndexById("popularity_index"));
+		$.ajax({
+		    type: "GET",
+		    url: "/cms/popularity-combo/getdata/",
+		    success: function (result) {
+		        result.forEach(function (pop) {
+		            pop_combo.put(pop.id, pop.description);
+		        });
+		    },
+		    async: false
+		});
+
+		my_shop_grid.init();
+		my_shop_grid.load("/cms/malls/getdata", "js")
+
+		dp = new dataProcessor("/cms/malls/getdata");
+		dp.init(my_shop_grid);
+		dp.enableDataNames(true);
+	    //dp.setUpdateMode("off");
+        /*This sends request to database for every field, need to find better approach*/
+		dp.setTransactionMode("POST", false);
+	}
+
+	 function addrow(){
+	     var id = my_shop_grid.uid();
+        my_shop_grid.setActive(true);
+        my_shop_grid.addRow(id, "Enter New Mall ,1, Enter Mall address,1,0,0.0,0.0");
+    }
+
+	 function deleterow() {
+	     var r = confirm("Do you really want to delete the record.");
+	     if (r == true) {
+	         my_shop_grid.deleteSelectedRows();
+	     } 
+	 }
+
+	 function updaterow() {
+	     //dp.sendData();
+	 }
+</script>	
+
+
+
+<body onload="init();">
+    
+    <br>
+    <br>
+    <input style="padding:6px;" type="button" value="Home" onclick="location.href = '/cms/homepage';">
+    <br />
+
+    <br />
+    <h3>CMS- Shopping Malls</h3>
+    <div id="grid_shop_mall" style="width:1000px; height:500px;"></div>
+    <br>
+        <input style="padding:6px;" type="button" value="Add a new record" onclick="addrow()">
+        <input style="padding:6px;" type="button" value="Update the selected record" onclick="updaterow()">
+        <input style="padding:6px;" type="button" value="Delete the selected record" onclick="deleterow()">
+</body>

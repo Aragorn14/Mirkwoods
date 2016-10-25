@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <title>Scube Add Mall Images Files</title>
+  <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+</head>
+<link rel="stylesheet" href="../../styles/images-cms.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+ <script type="text/javascript">
+    $( document ).ready(function() {
+      $('.navigation .n1').on('click', function(e) {
+        $('.navigation .mallName').val(e.target.innerHTML);
+          $("#mall-id").val($(e.target).data('mall-id'));
+          //console.log($(e.target).data('mall-id'));
+          $.ajax({
+            type: "GET",
+            url: "/cms/images/getmallimages/",
+            success: function (result) {
+              if(result.length) {
+                //Create a HTML Table element.
+                var table = $("<table />");
+                table[0].border = "1";
+   
+                //Get the count of columns.
+                var columnCount = 2;
+                var columnName = ['Image URL','Image Type'];
+   
+                //Add the header row.
+                var row = $(table[0].insertRow(-1));
+                for (var i = 0; i < columnCount; i++) {
+                  var headerCell = $("<th />");
+                  headerCell.html(columnName[i]);
+                  row.append(headerCell);
+                }
+   
+                //Add the data rows.
+                result.forEach(function (malls) {
+                  row = $(table[0].insertRow(-1));
+                  var cell1 = $("<td />");
+                  cell1.html(malls.url);
+                  var cell2 = $("<td />");
+                  cell2.html(malls.type);                
+                  row.append(cell1);
+                  row.append(cell2);
+                });
+                var dvTable = $("#urltable");
+                dvTable.html("");
+                dvTable.append(table);
+              }
+            },
+            //shop_combo.put(shops.id, shops.description);
+            async : false
+          });
+      });
+    });
+  </script>
+
+
+<body>
+  <form method="post" enctype="multipart/form-data" action="/cms/images/malls">
+      <h2>Mall Image ADD CMS Page </h2>
+
+      <ul class="navigation">
+          <a name="location" class="main">Mall Name</a>
+          <input type="text" name="mallName" class="mallName" />
+          <% for(var i=0; i<locationList.length; i++) {%>
+             <li class="n1" data-mall-id='<%= i+1 %>' value='<%= locationList[i]['description'] %>' ><%= locationList[i]['description'] %></li>
+          <% } %>
+      </ul>
+
+      <div id="urltable" class = "urltable"></div>
+
+      <div class = "uploader">
+      <input id="mall-id" type="hidden" name="mall-id">
+      <input type="file" name="mall-image" class="uploadimage">
+      </div>
+
+      <div class = "submitbutton">
+      <input type="submit" class="submit" value="Submit">
+      </div>
+
+
+
+  </form>
+
+</body>
+</html>
