@@ -1,0 +1,50 @@
+{
+  "name": "parkking",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "main": "app.js",
+  "dependencies": {
+    "express": "~4.2.0",
+    "ejs" : "~0.8.5",
+    "express-session": "~1.0.0",
+
+    "passport" : "~0.1.17",     
+    "passport-local" : "~0.1.6",  
+    "passport-facebook" : "~1.0.2", 
+    "passport-google-oauth" : "~0.1.5",
+
+    "static-favicon": "~1.0.0",
+    "cookie-parser": "~1.0.1",
+    "body-parser": "~1.0.0",
+
+    "debug": "~0.7.4",
+    "morgan": "~1.0.0",
+    "connect-flash": "~0.1.1",
+    "nodemailer": "1.2.1",
+    "node-uuid": "1.4.1",
+    "node-gcm-service": "0.2.8",
+    "bunyan": "1.0.1",
+    "stack-trace": "0.0.9",
+    "cloudinary": "1.2.1"
+
+  },
+  "description": "Parkking ========",
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frodo14/Parkking.git"
+  },
+  "keywords": [
+    "sparkk"
+  ],
+  "author": "vishak nag ashoka",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frodo14/Parkking/issues"
+  },
+  "homepage": "https://github.com/frodo14/Parkking"
+}
